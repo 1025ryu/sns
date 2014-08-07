@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+{% block body %}
+<!-- <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}">
+<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+ -->
+
+<form class="form-horizontal" role="form" method="post" action="/signup">
+
+  <div class="form-group">
+    <label for="inputEmail3" class="col-sm-4 control-label">Email</label>
+    <div class="col-sm-4">
+      <input type="email" class="form-control" id="inputEmail3" name="email" placeholder="Email">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="inputPassword3" class="col-sm-4 control-label">Password</label>
+    <div class="col-sm-4">
+      <input type="password" class="form-control" id="inputPassword3" name="password" placeholder="Password">
+    </div>
+  </div>
+  <div class="form-group">
+   <label for="inputPassword3" class="col-sm-4 control-label">Password check</label>
+    <div class="col-sm-4">
+      <input type="password" class="form-control" id="inputPassword3" name="password_check" placeholder="Password">
+    </div>
+  </div>
+ <div class="form-group">
+    <label for="inputEmail3" class="col-sm-4 control-label">Mobile</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="phone" name="phone" placeholder="010-123-1234">
+    </div>
+  </div>
+
+ <div class="form-group">
+    <label for="inputEmail3" class="col-sm-4 control-label">gender</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="phone" name="gender" placeholder="M/F">
+    </div>
+  </div>
+
+   <div class="form-group">
+    <label for="inputEmail3" class="col-sm-4 control-label">username</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="phone" name="username" placeholder="jaehee">
+    </div>
+  </div>
+ <div class="form-group">
+    <label for="inputEmail3" class="col-sm-4 control-label">birthday</label>
+    <div class="col-sm-4">
+      <input type="text" class="form-control" id="phone" name="birthday" placeholder="1222.10.23">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-8 control-label">
+      <button type="submit" class="btn btn-default">Sign up</button>
+    </div>
+  </div>
+</form>
+
+
+
+{% endblock %}

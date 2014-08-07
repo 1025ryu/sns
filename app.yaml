@@ -1,0 +1,32 @@
+application: team-1025ryu #Your_Application_id
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+# Application Webpage icon
+# - url: /favicon.ico
+#   static_files: application/static/res/img/favicon.ico
+#   upload: application/static/res/img/favicon.ico
+
+# [application/static/*] => [project-id.appspot.com/static/*]
+- url: /static/css
+  static_dir: application/static/css
+  mime_type: "text/css"
+
+- url: /static/js
+  static_dir: application/static/js
+  mime_type: "text/js"
+
+# application[directory name] : module name
+- url: .*
+  script: application.app
+
+# Following Libraries don't have to be included in 'lib'
+libraries:
+- name: jinja2
+  version: "2.6"
+
+- name: markupsafe
+  version: "0.15"

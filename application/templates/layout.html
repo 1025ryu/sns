@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>layout</title>
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}">
+	<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+</head>
+
+
+<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
+
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target=".navbar-ex1-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+
+          <ul class="nav navbar-nav navbar-right">
+		
+            <li>
+              <a href="/read">
+                <span class="glyphicon glyphicon-star" id="starry"></span>
+                &nbsp;wall
+              </a>
+            </li>
+
+            <li>
+              <a href="/write">
+                <span class="glyphicon glyphicon-plus"></span>
+                &nbsp;Write
+              </a>
+            </li>
+
+            <li>
+              <a href="/login">
+                <span class="glyphicon glyphicon-th"></span>
+                &nbsp;Login
+              </a>
+            </li>
+
+            <li class="dropdown">
+              <a href="/signup" class="dropdown-toggle" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-stats"></span>
+                &nbsp;Sign up <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="implement this">Raw Data</a>
+                </li>
+                <li>
+                  <a href="implement this">Graphs</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <a href="implement this">Email Report</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="dropdown active">
+              <a href="/timeline" class="dropdown-toggle" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-user"></span>
+                &nbsp;
+                        Timeline <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <a href="/accounts/settings/">Account Settings</a>
+                </li>
+                <li>
+                  <a href="/accounts/password/change/">Change Password</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <a href="help">Help</a>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <a href="/logout/">Log Out</a>
+                </li>
+              </ul>
+            </li>
+
+          </ul>
+        </div>
+        <!-- /.navbar-collapse --> </div>
+      <!-- /.container --> </nav>
+
+<br>
+<br>
+<br>
+<br>
+{% if session %}
+<p>welcome! {{session.email}}</p>
+{% endif %}
+
+
+{% block body %}{% endblock %}
+</html>

@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block body %}
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}">
+<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+<style>
+body {
+    font: 14px/20px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #333;
+}
+
+img {
+  height: auto;
+  width: 100%;
+}
+
+section {
+
+margin-top: 30px;
+margin-left: 100px;
+padding: 30px 60px;
+}
+
+.form-inline{
+
+margin: auto;
+
+}
+</style>
+<h1 class="text-center">likelion's wall</h1>
+<br>
+
+<div class="col-md-6 col-md-offset-3 panel panel-primary">
+  <div class="col-md-4 panel-heading">
+      혜리
+  <br>
+  </div>
+    <div class="col-md-8 panel-body">
+      와우우우우우우우우!!ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
+  </div>
+</div>
+<br><br>
+
+<section>
+    <div class='friend'>
+        <h3>comment1</h3>
+          <span class="glyphicon glyphicon-ok"></span>
+          <span class="glyphicon glyphicon-remove"></span>
+        <p>first comment</p>
+    </div>
+    <br>
+    <div class='friend'>
+        <h3>comment2</h3>
+          <span class="glyphicon glyphicon-ok"></span>
+         <span class="glyphicon glyphicon-remove"></span>
+        <p>dfdfdfdf</p>
+    </div>
+    <br>
+    <div class='friend'>
+   <h3>comment3</h3>
+             <span class="glyphicon glyphicon-ok"></span>
+         <span class="glyphicon glyphicon-remove"></span>
+        <p>dfksfjlkdfjkllllllllllllllllllllllljlkmwflkm</p>
+
+    </div>
+    <br>
+  <form class="form-inline" role="form">
+  <div class="form-group">
+    <label class="sr-only" for="exampleInputEmail2">comment</label>
+    <input type="email" class="form-control" id="exampleInputEmail2" placeholder="your comment" size="30">
+  </div>
+ <button type="submit" class="btn btn-default">go</button>
+</form>
+
+</section>
+
+
+
+{% endblock %}
