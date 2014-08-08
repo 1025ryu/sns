@@ -3,7 +3,7 @@
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}">
 <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 {% if session %}
-<h1 class="text-center">user id : {{session.wall_id}}' s wall</h1>
+<h1 class="text-center">{{session.username}}' s wall</h1>
 
 {% endif %}
 <br>
@@ -31,5 +31,18 @@
      널 때릴거다
     </div>
 </div>
+{% if posts %}
 
+<div class="col-md-6 col-md-offset-3 panel panel-primary">
+  <div class="col-md-4 panel-heading">
+  <br>
+  </div>
+  <span class="col-xs-1 glyphicon glyphicon-ok"></span>
+  <span class="glyphicon glyphicon-remove"></span>
+    <div class="col-md-8 panel-body">
+    {{ posts }}
+    </div>
+</div>
+
+{% endif %}
 {% endblock %}
