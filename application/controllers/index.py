@@ -15,12 +15,14 @@ def login():
 		password=request.form['password']
 		if user_manager.login_check(email,password):
 			session['email']=request.form['email']
-			return render_template('timeline.html')
+			wall_id=user_manager.get_user_list(email)
+			session['wall_id']=wall_id
+			return render_template('timeline.html',wall_id=wall_id)
 		else:
 			return render_template('login.html')
 	else:
 		return render_template('login.html')
-		
+
 @app.route('/signup',methods=['GET','POST'])
 def signup():
 	if request.method=="POST":
@@ -33,9 +35,11 @@ def signup():
 def write():
 	return render_template('write.html')
 
-@app.route('/timeline')
-def timeline():
-	return render_template('timeline.html')
+@app.route('/',defaults={'wall_id':0})
+@app.route('/timeline/<int:wall_id>')
+def timeline(wall_id):
+	session['wall_id']=wall_id
+	return render_template('timeline.html',message=wall_id)
 
 @app.route('/read')
 def read():
