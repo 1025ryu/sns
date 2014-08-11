@@ -20,7 +20,7 @@ def get_user_list(mail):
 
 def get_user(id):
 	return User.query.get(id)
-	
+
 def get_post(pid):
 	return Post.query.get(pid)
 
@@ -48,4 +48,9 @@ def comment(user,texts,post):
 		post_id=post
 		)
 	db.session.add(comment)
+	db.session.commit()
+
+def delete_post(pid):
+	d_post=Post.query.get(pid)
+	db.session.delete(d_post)
 	db.session.commit()

@@ -47,11 +47,15 @@ def timeline(wall_id):
 	user=user_manager.get_user(wall_id)
 	username = user.username
 	session['wall_id']=wall_id
-	session['username']=username
+	session['user_name']=username
 	# posts=user_manager.get_post_list(session['wall_id'])
 	return render_template('timeline.html',message=username,posts=user.wall_posts)
 
-@app.route('/read',defaults={'wall_id':1,'pid':1})
+@app.route('/delete_post/<int:pid>')
+def delete_post(pid):
+	user_manager.delete_post(pid)
+	return redirect(url_for('timeline',wall_id=session['wall_id']))
+
 @app.route('/read/<int:wall_id>/<int:pid>',methods=['GET','POST'])
 def read(pid,wall_id):
 	if request.method=="POST":

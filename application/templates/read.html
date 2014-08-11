@@ -33,6 +33,11 @@ margin: auto;
        {{post.user.username}}
   <br>
   </div>
+  {% if not session.username==post.user.username %}
+  <a href="{{ url_for('delete_post',pid=post.id) }}">
+  <span class="glyphicon glyphicon-remove"></span>
+  </a>
+  {% endif %}
     <div class="col-md-8 panel-body">
      {{post.body}}
   </div>
