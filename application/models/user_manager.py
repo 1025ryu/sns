@@ -17,17 +17,35 @@ def add_user(data):
 def get_user_list(mail):
 	user=User.query.filter_by(email=mail).first()
 	return user
-def get_username(id):
+
+def get_user(id):
 	return User.query.get(id)
+	
+def get_post(pid):
+	return Post.query.get(pid)
+
 def login_check(email,password):
 	return User.query.filter(User.email==email,User.password==db.func.md5(password)).count()!=0
 
-def create(text):
+def get_post_list(wallid):
+	post=Post.query.filter_by(wall_id=wallid).all()
+	return post
+
+def create(user,text,wall):
 	post=Post(
-		user_id=session['username'],
-		wall_id=session['wall_id'],
+		user_id=user,
+		wall_id=wall,
 		body=text,
 		is_secret='1'
 		)
 	db.session.add(post)
+	db.session.commit()
+
+def comment(user,texts,post):
+	comment=Comment(
+		user_id=user,
+		body=texts,
+		post_id=post
+		)
+	db.session.add(comment)
 	db.session.commit()

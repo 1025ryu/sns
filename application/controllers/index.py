@@ -15,11 +15,10 @@ def login():
 		password=request.form['password']
 		if user_manager.login_check(email,password):
 			session['email']=request.form['email']
-			wall_id=user_manager.get_user_list(email).id
 			username=user_manager.get_user_list(email).username
+			session['user_id']=user_manager.get_user_list(email).id
 			session['username']=username
-			session['wall_id']=wall_id
-			return render_template('timeline.html',wall_id=wall_id,username=username)
+			return render_template('layout.html')
 		else:
 			return render_template('login.html')
 	else:
@@ -36,22 +35,38 @@ def signup():
 @app.route('/write',methods=['GET','POST'])
 def write():
 	if request.method=="POST":
-		posts=create(request.form['post'])
-		return render_template('timeline.html',posts=posts)
+		post=request.form['post']
+		user_manager.create(session['user_id'],post,session['wall_id'])
+		return redirect(url_for('timeline'))
 	else:
 		return render_template('write.html')
 
 @app.route('/',defaults={'wall_id':0})
 @app.route('/timeline/<int:wall_id>')
 def timeline(wall_id):
-	username=user_manager.get_username(wall_id).username
+	user=user_manager.get_user(wall_id)
+	username = user.username
+	session['wall_id']=wall_id
 	session['username']=username
-	return render_template('timeline.html',message=username)
+	# posts=user_manager.get_post_list(session['wall_id'])
+	return render_template('timeline.html',message=username,posts=user.wall_posts)
 
-@app.route('/read')
-def read():
-	return render_template('read.html')
-
+@app.route('/read',defaults={'wall_id':1,'pid':1})
+@app.route('/read/<int:wall_id>/<int:pid>',methods=['GET','POST'])
+def read(pid,wall_id):
+	if request.method=="POST":
+		
+		post=user_manager.get_post(pid)
+		comments=request.form['comments']
+		
+		user_manager.comment(session['user_id'],comments,pid)
+		return render_template('read.html',post=post,comments=post.comments)
+	else:
+		user=user_manager.get_user(wall_id)
+		post=user_manager.get_post(pid)
+		session['pid']=pid
+		session['wall_id']=wall_id
+		return render_template('read.html',post=post,comments=post.comments)
 
 @app.errorhandler(404)
 def page_not_found(e):

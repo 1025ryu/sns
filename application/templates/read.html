@@ -26,47 +26,34 @@ margin: auto;
 
 }
 </style>
-<h1 class="text-center">likelion's wall</h1>
 <br>
-
+{% if post %}
 <div class="col-md-6 col-md-offset-3 panel panel-primary">
   <div class="col-md-4 panel-heading">
-      혜리
+       {{post.user.username}}
   <br>
   </div>
     <div class="col-md-8 panel-body">
-      와우우우우우우우우!!ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
+     {{post.body}}
   </div>
 </div>
 <br><br>
-
+{% endif %}
 <section>
+  {% for comment in comments %}
     <div class='friend'>
-        <h3>comment1</h3>
+
+        <h3>{{comment.user.username}}</h3>
           <span class="glyphicon glyphicon-ok"></span>
           <span class="glyphicon glyphicon-remove"></span>
-        <p>first comment</p>
+        <p>{{comment.body}}</p>
     </div>
+  {% endfor %}
     <br>
-    <div class='friend'>
-        <h3>comment2</h3>
-          <span class="glyphicon glyphicon-ok"></span>
-         <span class="glyphicon glyphicon-remove"></span>
-        <p>dfdfdfdf</p>
-    </div>
-    <br>
-    <div class='friend'>
-   <h3>comment3</h3>
-             <span class="glyphicon glyphicon-ok"></span>
-         <span class="glyphicon glyphicon-remove"></span>
-        <p>dfksfjlkdfjkllllllllllllllllllllllljlkmwflkm</p>
-
-    </div>
-    <br>
-  <form class="form-inline" role="form">
+  <form class="form-inline" role="form" method="post" action="{{ url_for('read',pid=session['pid'],wall_id=session['wall_id']) }}">
   <div class="form-group">
     <label class="sr-only" for="exampleInputEmail2">comment</label>
-    <input type="email" class="form-control" id="exampleInputEmail2" placeholder="your comment" size="30">
+    <input type="text" name="comments" class="form-control" id="exampleInputEmail2" placeholder="your comment" size="30">
   </div>
  <button type="submit" class="btn btn-default">go</button>
 </form>

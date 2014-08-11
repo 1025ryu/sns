@@ -7,42 +7,26 @@
 
 {% endif %}
 <br>
-
+<br>
+<a href="{{ url_for('write') }}"><input id="button" type="submit" value="write"></a>
+<br>      
+<br>
+</a>
+{% for post in posts %}
+<a href="{{url_for('read',pid=post.id,wall_id=post.wall_id)}}">
 <div class="col-md-6 col-md-offset-3 panel panel-primary">
+
   <div class="col-md-4 panel-heading">
-      혜리
+    {{post.user.username}}
   <br>
   </div>
   <span class="col-xs-1 glyphicon glyphicon-ok"></span>
   <span class="glyphicon glyphicon-remove"></span>
     <div class="col-md-8 panel-body">
-      와우우우우우우우우!!ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
-  </div>
-</div>
-
-<div class="col-md-6 col-md-offset-3 panel panel-primary">
-  <div class="col-md-4 panel-heading">
-      재희
-  <br>
-  </div>
-  <span class="col-xs-1 glyphicon glyphicon-ok"></span>
-  <span class="glyphicon glyphicon-remove"></span>
-    <div class="col-md-8 panel-body">
-     널 때릴거다
+    {{post.body}}
     </div>
+   
 </div>
-{% if posts %}
-
-<div class="col-md-6 col-md-offset-3 panel panel-primary">
-  <div class="col-md-4 panel-heading">
-  <br>
-  </div>
-  <span class="col-xs-1 glyphicon glyphicon-ok"></span>
-  <span class="glyphicon glyphicon-remove"></span>
-    <div class="col-md-8 panel-body">
-    {{ posts }}
-    </div>
-</div>
-
-{% endif %}
+ </a>
+{% endfor %}
 {% endblock %}
