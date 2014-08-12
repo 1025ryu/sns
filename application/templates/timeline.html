@@ -10,6 +10,7 @@
   }
 
 </style>
+
 {% if session %}
 <h1 class="text-center">{{session.user_name}}' s wall</h1>
 
@@ -30,11 +31,6 @@
     {{post.user.username}}
   <br>
   </div>
-  <span class="col-xs-1 glyphicon glyphicon-ok"></span>
-
-  <span class="glyphicon glyphicon-remove"></span>
-
-
 <a href="{{url_for('read',pid=post.id,wall_id=post.wall_id)}}">
 
     <div class="col-md-8 panel-body">

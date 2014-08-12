@@ -25,6 +25,7 @@ padding: 30px 60px;
 margin: auto;
 
 }
+
 </style>
 <br>
 {% if post %}
@@ -36,6 +37,9 @@ margin: auto;
   {% if not session.username==post.user.username %}
   <a href="{{ url_for('delete_post',pid=post.id) }}">
   <span class="glyphicon glyphicon-remove"></span>
+  </a>
+  <a href="{{ url_for('modify',pid=post.id) }}">
+  <span class="glyphicon glyphicon-wrench"></span>
   </a>
   {% endif %}
     <div class="col-md-8 panel-body">
@@ -50,7 +54,11 @@ margin: auto;
 
         <h3>{{comment.user.username}}</h3>
           <span class="glyphicon glyphicon-ok"></span>
-          <span class="glyphicon glyphicon-remove"></span>
+  {% if not session.username==comment.user.username %}
+  <a href="{{ url_for('delete_comment',cid=comment.id,pid=session['pid']) }}">
+  <span class="glyphicon glyphicon-remove"></span>
+  </a>
+  {% endif %}
         <p>{{comment.body}}</p>
     </div>
   {% endfor %}

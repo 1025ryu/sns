@@ -18,6 +18,7 @@ def login():
 			username=user_manager.get_user_list(email).username
 			session['user_id']=user_manager.get_user_list(email).id
 			session['username']=username
+			session['logged_in'] = True
 			return render_template('layout.html')
 		else:
 			return render_template('login.html')
@@ -28,7 +29,7 @@ def login():
 def signup():
 	if request.method=="POST":
 		user_manager.add_user(request.form)
-		return render_template('signup.html')
+		return render_template('layout.html')
 	else:
 		return render_template('signup.html')
 
@@ -37,7 +38,7 @@ def write():
 	if request.method=="POST":
 		post=request.form['post']
 		user_manager.create(session['user_id'],post,session['wall_id'])
-		return redirect(url_for('timeline'))
+		return redirect(url_for('timeline',wall_id=session['wall_id']))
 	else:
 		return render_template('write.html')
 
@@ -56,6 +57,21 @@ def delete_post(pid):
 	user_manager.delete_post(pid)
 	return redirect(url_for('timeline',wall_id=session['wall_id']))
 
+@app.route('/delete_comment/<int:pid>/<int:cid>')
+def delete_comment(pid,cid):
+	user_manager.delete_comment(cid)
+	return redirect(url_for('read',pid=session['pid'],wall_id=session['wall_id']))
+
+@app.route('/modify/<int:pid>',methods=['GET','POST'])
+def modify(pid):
+	if request.method=="POST":
+		text=request.form['post']
+		user_manager.modify(pid,text)
+		return redirect(url_for('read',pid=session['pid'],wall_id=session['wall_id']))
+	else:
+		post=user_manager.get_post(pid)
+		return render_template('edit.html',post=post)
+
 @app.route('/read/<int:wall_id>/<int:pid>',methods=['GET','POST'])
 def read(pid,wall_id):
 	if request.method=="POST":
@@ -71,7 +87,10 @@ def read(pid,wall_id):
 		session['pid']=pid
 		session['wall_id']=wall_id
 		return render_template('read.html',post=post,comments=post.comments)
-
+@app.route('/logout')
+def logout():
+	session.clear()
+	return render_template('layout.html')
 @app.errorhandler(404)
 def page_not_found(e):
     """Return a custom 404 error."""

@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 {% block body %}
 <link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}">
+
 <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
 
 
@@ -20,11 +21,10 @@
   <div class="form-group">
     <div class="col-sm-8 control-label">
       <button type="submit" class="btn btn-default">Log in</button>
-      <button type="submit" class="btn btn-default">Sign up</button>
+      
     </div>
   </div>
 </form>
-
 
 
 {% endblock %}

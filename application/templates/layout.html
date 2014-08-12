@@ -6,6 +6,13 @@
 	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
 	<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/bootstrap.css') }}">
 	<script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+<style>
+  hr{
+height: 12px;
+border: 0;
+box-shadow: inset 0 12px 12px -12px rgba(0,0,0,0.5);
+}
+</style>
 </head>
 
 
@@ -26,9 +33,9 @@
           <ul class="nav navbar-nav navbar-right">
 		
             <li>
-              <a href="/read">
+              <a href="/">
                 <span class="glyphicon glyphicon-star" id="starry"></span>
-                &nbsp;wall
+                &nbsp;Home
               </a>
             </li>
 
@@ -38,14 +45,15 @@
                 &nbsp;Write
               </a>
             </li>
-
+            {% if not session.logged_in %}
             <li>
               <a href="/login">
-                <span class="glyphicon glyphicon-th"></span>
+                <span class="glyphicon glyphicon-heart"></span>
                 &nbsp;Login
               </a>
             </li>
-
+            
+           
             <li class="dropdown">
               <a href="/signup" class="dropdown-toggle" data-toggle="dropdown">
                 <span class="glyphicon glyphicon-stats"></span>
@@ -64,33 +72,32 @@
                 </li>
               </ul>
             </li>
-
+            {% endif %}
+             {% if session.logged_in %}
             <li class="dropdown active">
              
-              <a href="/timeline" data-toggle="dropdown">
+              <a href="{{ url_for('timeline',wall_id=session['user_id']) }}" data-toggle="dropdown">
           
                 <span class="glyphicon glyphicon-user"></span>
                 &nbsp;
                         Timeline <b class="caret"></b>
               </a>
-              <ul class="dropdown-menu">
-                <li>
-                  <a href="/accounts/settings/">Account Settings</a>
-                </li>
-                <li>
-                  <a href="/accounts/password/change/">Change Password</a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                  <a href="help">Help</a>
-                </li>
-                <li class="divider"></li>
-                <li>
-                  <a href="/logout/">Log Out</a>
-                </li>
-              </ul>
+              
             </li>
+            {% endif %}
 
+             {% if session.logged_in %}
+            <li class="dropdown active">
+             
+              <a href="{{ url_for('logout') }}" data-toggle="dropdown">
+          
+                <span class="glyphicon glyphicon-ban-circle"></span>
+                &nbsp;
+                        Logout <b class="caret"></b>
+              </a>
+              
+            </li>
+            {% endif %}
           </ul>
         </div>
         <!-- /.navbar-collapse --> </div>
@@ -100,6 +107,7 @@
 <br>
 <br>
 <br>
+<hr>
 {% if session %}
 <p>welcome! {{session.email}}</p>
 {% endif %}

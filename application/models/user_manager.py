@@ -41,6 +41,11 @@ def create(user,text,wall):
 	db.session.add(post)
 	db.session.commit()
 
+def modify(post_id,text):
+	post=Post.query.get(post_id)
+	post.body=text
+	db.session.commit()
+
 def comment(user,texts,post):
 	comment=Comment(
 		user_id=user,
@@ -53,4 +58,9 @@ def comment(user,texts,post):
 def delete_post(pid):
 	d_post=Post.query.get(pid)
 	db.session.delete(d_post)
+	db.session.commit()
+
+def delete_comment(cid):
+	d_comment=Comment.query.get(cid)
+	db.session.delete(d_comment)
 	db.session.commit()
