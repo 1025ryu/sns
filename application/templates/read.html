@@ -34,7 +34,7 @@ margin: auto;
        {{post.user.username}}
   <br>
   </div>
-  {% if not session.username==post.user.username %}
+  {% if session.username==post.user.username %}
   <a href="{{ url_for('delete_post',pid=post.id) }}">
   <span class="glyphicon glyphicon-remove"></span>
   </a>
@@ -53,8 +53,7 @@ margin: auto;
     <div class='friend'>
 
         <h3>{{comment.user.username}}</h3>
-          <span class="glyphicon glyphicon-ok"></span>
-  {% if not session.username==comment.user.username %}
+  {% if session.username==comment.user.username %}
   <a href="{{ url_for('delete_comment',cid=comment.id,pid=session['pid']) }}">
   <span class="glyphicon glyphicon-remove"></span>
   </a>

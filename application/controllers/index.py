@@ -46,11 +46,11 @@ def write():
 @app.route('/timeline/<int:wall_id>')
 def timeline(wall_id):
 	user=user_manager.get_user(wall_id)
-	username = user.username
+	user_name = user.username
 	session['wall_id']=wall_id
-	session['user_name']=username
+	session['user_name']=user_name
 	# posts=user_manager.get_post_list(session['wall_id'])
-	return render_template('timeline.html',message=username,posts=user.wall_posts)
+	return render_template('timeline.html',message=user_name,posts=user.wall_posts)
 
 @app.route('/delete_post/<int:pid>')
 def delete_post(pid):
