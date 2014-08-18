@@ -3,6 +3,7 @@ from application import app
 from flask import render_template, redirect, url_for,session, request
 from application.models.schema import *
 from application.models import user_manager
+import json
 
 @app.route('/')
 def index():
@@ -49,8 +50,23 @@ def timeline(wall_id):
 	user_name = user.username
 	session['wall_id']=wall_id
 	session['user_name']=user_name
+	# data={}
+	# db_list=[]
 	# posts=user_manager.get_post_list(session['wall_id'])
-	return render_template('timeline.html',message=user_name,posts=user.wall_posts)
+	# for post in posts:
+	# 	data['created_time']=str(post.created_time)
+	# 	data['id']=post.id
+	# 	data['body']=post.body
+	# 	data['edited_time']=str(post.edited_time)
+	# 	data['is_edited']=post.is_edited
+	# 	data['is_secret']=post.is_secret
+	# 	data['user_id']=post.user_id	
+	# 	data['wall_id']=post.wall_id
+	# 	db_list.append(data)
+	# result_list = json.dumps(db_list)
+	return render_template('timeline.html',message=user_name)
+	# return render_template('timeline.html',message=user_name,list=json.dumps(db_list))
+	# return render_template('log.html',log=db_list)
 
 @app.route('/delete_post/<int:pid>')
 def delete_post(pid):
@@ -78,7 +94,6 @@ def read(pid,wall_id):
 		
 		post=user_manager.get_post(pid)
 		comments=request.form['comments']
-		
 		user_manager.comment(session['user_id'],comments,pid)
 		return render_template('read.html',post=post,comments=post.comments)
 	else:
@@ -91,6 +106,18 @@ def read(pid,wall_id):
 def logout():
 	session.clear()
 	return render_template('layout.html')
+
+@app.route('/show', methods=['GET','POST'])
+def show():
+	if request.method == 'POST':
+		# raise ValueError(request.form['id'])
+		cnt=request.form['cnt']
+		cnt=int(cnt)
+		posts=user_manager.get_post_list(session['wall_id'],cnt)
+		return render_template('show.html',posts=posts)
+	else:
+		return render_template('show.html',posts=posts)
+
 @app.errorhandler(404)
 def page_not_found(e):
     """Return a custom 404 error."""

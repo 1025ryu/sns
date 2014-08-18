@@ -1,6 +1,8 @@
+#-*- coding:utf-8 -*-
 from flask import render_template, redirect, url_for,session, request
 from application import db
 from schema import *
+import json
 
 def add_user(data):
 	user = User(
@@ -27,8 +29,10 @@ def get_post(pid):
 def login_check(email,password):
 	return User.query.filter(User.email==email,User.password==db.func.md5(password)).count()!=0
 
-def get_post_list(wallid):
-	post=Post.query.filter_by(wall_id=wallid).all()
+def get_post_list(wallid,limit):
+	cnt=int(limit)
+	post=Post.query.filter(Post.wall_id==wallid).order_by(db.desc(Post.created_time)).slice(cnt,cnt+5).all()
+	# post=Post.query.filter_by(wall_id=wallid).all()
 	return post
 
 def create(user,text,wall):
