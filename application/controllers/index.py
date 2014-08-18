@@ -118,6 +118,14 @@ def show():
 	else:
 		return render_template('show.html',posts=posts)
 
+@app.route('/follow',methods=['GET','POST'])
+def follow():
+	if request.method=='POST':
+		text=request.form['text']
+		users=user_manager.find_user(text)
+		return render_template('user_list.html',users=users)
+	else:
+		return render_template('follow.html')
 @app.errorhandler(404)
 def page_not_found(e):
     """Return a custom 404 error."""

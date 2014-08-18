@@ -68,3 +68,13 @@ def delete_comment(cid):
 	d_comment=Comment.query.get(cid)
 	db.session.delete(d_comment)
 	db.session.commit()
+
+def add_profile_image(user_id, filename):
+	user= get_user(user_id)
+	user.profile_image =filename
+
+	db.session.commit()
+
+def find_user(text):
+	user = User.query.filter(User.username.like('%'+text+'%')).all()
+	return user

@@ -8,6 +8,7 @@ class User(db.Model):
 	password	= db.Column(db.String(100))
 	mobile		= db.Column(db.String(15))
 	birthday	= db.Column(db.Date)
+	profile_image =db.Column(db.String(100))
 
 class Post(db.Model):
 	id			= db.Column(db.Integer, primary_key=True)
@@ -29,3 +30,11 @@ class Comment(db.Model):
 	post 		= db.relationship('Post', backref= db.backref('comments', cascade='all,delete-orphan', lazy='dynamic'))
 	user_id		= db.Column(db.Integer, db.ForeignKey('user.id'))
 	user 		= db.relationship('User')
+
+class Follow(db.Model):
+	id 			=	db.Column(db.Integer, primary_key=True)
+	follower_id =  	db.Column(db.Integer,db.ForeignKey('user.id'))
+	follower	=	db.relationship('User', foreign_keys=[follower_id], backref=db.backref('followees', cascade='all, delete-orphan', lazy='dynamic'))
+	followee_id =	db.Column(db.Integer,db.ForeignKey('user.id'))
+	followee 	=	db.relationship('User', foreign_keys=[followee_id], backref=db.backref('followers', cascade='all, delete-orphan', lazy='dynamic'))
+	
