@@ -37,4 +37,3 @@ class Follow(db.Model):
 	follower	=	db.relationship('User', foreign_keys=[follower_id], backref=db.backref('followees', cascade='all, delete-orphan', lazy='dynamic'))
 	followee_id =	db.Column(db.Integer,db.ForeignKey('user.id'))
 	followee 	=	db.relationship('User', foreign_keys=[followee_id], backref=db.backref('followers', cascade='all, delete-orphan', lazy='dynamic'))
-	

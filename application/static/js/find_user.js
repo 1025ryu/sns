@@ -9,7 +9,7 @@ $(document).ready(function(){
 			}
 			xhr=$.ajax({
 
-				url: '/follow',
+				url: '/find',
 				type: 'POST',
 				data: {'text':$('input').val()},
 				success:function(response){

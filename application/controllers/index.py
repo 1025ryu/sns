@@ -107,6 +107,28 @@ def logout():
 	session.clear()
 	return render_template('layout.html')
 
+@app.route('/find',methods=['GET','POST'])
+def find():
+	if request.method=='POST':
+		text=request.form['text']
+		users=user_manager.find_user(text)
+		return render_template('user_list.html',users=users)
+	else:
+		return render_template('find.html')
+
+@app.route('/add_follow/<int:user_id>')
+def add_follow(user_id):
+	follower_id=session['user_id']
+	followee_id=user_id
+	if followee_id!=follower_id:
+		user_manager.add_follow(follower_id,followee_id)
+	return redirect(url_for('find'))
+
+@app.route('/follow')
+def follow():
+	user=user_manager.get_user(session['user_id'])
+	return render_template('follow.html',followers=user.followers,followees=user.followees)
+
 @app.route('/show', methods=['GET','POST'])
 def show():
 	if request.method == 'POST':
@@ -118,14 +140,33 @@ def show():
 	else:
 		return render_template('show.html',posts=posts)
 
-@app.route('/follow',methods=['GET','POST'])
-def follow():
-	if request.method=='POST':
-		text=request.form['text']
-		users=user_manager.find_user(text)
-		return render_template('user_list.html',users=users)
+@app.route('/newspeed', methods=['GET','POST'])
+def newspeed():
+	if request.method == 'POST':
+		cnt=request.form['cnt']
+		cnt=int(cnt)
+		user_id=session['user_id']
+		user=user_manager.get_user(session['user_id'])
+		followees=user.followees
+		followee_list=[]
+		followee_list.append(user_id)
+		for followee in followees:
+			followee_id=followee.followee.id
+			followee_list.append(followee_id)
+		posts=user_manager.get_newspeed_post(followee_list,cnt)
+		return render_template('newspeed_show.html',posts=posts)
 	else:
-		return render_template('follow.html')
+		user_id=session['user_id']
+		user=user_manager.get_user(session['user_id'])
+		followees=user.followees
+		followee_list=[]
+		followee_list.append(user_id)
+		for followee in followees:
+			followee_id=followee.followee.id
+			followee_list.append(followee_id)
+		posts=user_manager.get_newspeed_post(followee_list,0)
+		return render_template('newspeed.html',posts=posts)
+
 @app.errorhandler(404)
 def page_not_found(e):
     """Return a custom 404 error."""

@@ -2,6 +2,7 @@
 from flask import render_template, redirect, url_for,session, request
 from application import db
 from schema import *
+from sqlalchemy import or_
 import json
 
 def add_user(data):
@@ -74,7 +75,20 @@ def add_profile_image(user_id, filename):
 	user.profile_image =filename
 
 	db.session.commit()
+def add_follow(follower,followee):
+	follow=Follow(
+		follower_id=follower,
+		followee_id=followee
+		)
+	db.session.add(follow)
+	db.session.commit()
 
 def find_user(text):
 	user = User.query.filter(User.username.like('%'+text+'%')).all()
 	return user
+
+def get_newspeed_post(find_list,cnt):
+	posts=Post.query.filter(or_(Post.wall_id.in_(find_list), Post.user_id.in_(find_list) )).order_by(db.desc(Post.created_time)).slice(cnt,cnt+5).all()
+	# posts=Post.query.filter(Post.user_id.in_([user_id])).all()
+	# filter(or_(User.name == 'ed', User.name == 'wendy'))
+	return posts

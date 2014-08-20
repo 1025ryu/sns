@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+
+{% block body %}
+<script type="text/javascript" src="{{ url_for('static', filename='js/find_user.js') }}"></script>
+<form action="{{ url_for('find') }}" method="post">
+	<input type="text" name="find_user">
+</form>
+
+<div id="users">
+
+</div>
+
+{% endblock %}

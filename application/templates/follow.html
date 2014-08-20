@@ -2,13 +2,15 @@
 
 
 {% block body %}
-<script type="text/javascript" src="{{ url_for('static', filename='js/find_user.js') }}"></script>
-<form action="{{ url_for('follow') }}" method="post">
-	<input type="text" name="find_user">
-</form>
-
-<div id="users">
-
-</div>
+나를 받아보는 사람:
+	{% for follower in followers %}
+		{{follower.follower.username}}
+	{% endfor %}
+<br>
+<br>
+내가 받아보는 사람:
+	{% for followee in followees %}
+		{{followee.followee.username}}
+	{% endfor %}
 
 {% endblock %}
