@@ -2,7 +2,9 @@
 
 {% block body %}
 
+{% if profile_image %}
 <img src="{{ url_for('get_profile_image', filename=profile_image) }}" alt="profile image">
+{% endif %}
 <form enctype="multipart/form-data" action="{{ url_for('upload_image') }}" method="post">
 	<input type="file" name="profile_image">
 	<button type="submit">submit</button>

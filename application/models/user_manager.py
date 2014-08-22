@@ -11,7 +11,7 @@ def add_user(data):
 		username = data['username'],
 		gender	 = data['gender'],
 		password = db.func.md5(data['password']),
-		mobile	 = data['phone'],
+		mobile	 = data['mobile'],
 		birthday = data['birthday']
 	)
 	db.session.add(user)
@@ -49,6 +49,15 @@ def create(user,text,wall):
 def modify(post_id,text):
 	post=Post.query.get(post_id)
 	post.body=text
+	db.session.commit()
+
+def edit_user(user_id,data):
+	user=User.query.get(user_id)
+	user.username=data['username']
+	user.gender=data['gender']
+	user.password=db.func.md5(data['password'])
+	user.mobile=data['mobile']
+	user.birthday=data['birthday']
 	db.session.commit()
 
 def comment(user,texts,post):

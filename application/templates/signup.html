@@ -4,8 +4,56 @@
 <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
  -->
 <form class="form-horizontal" role="form" method="post" action="/signup">
+{% if form %}
 
-  <div class="form-group">
+
+      {{ form.hidden_tag() }}
+
+      {% if form.errors %}
+        <div class="alert alert-danger fade in">
+          <a href="#" class="close" data-dismiss="alert">&times;</a>
+          {% for field, errors in form.errors.items() %}
+            <ul>
+              {% for error in errors %}
+              <li>
+                {{ error }}
+              </li>
+              {% endfor %}
+            </ul>
+          {% endfor %}
+
+        </div>
+      {% endif %}
+
+      {% if login_error %}
+        <div class="alert alert-danger fade in">
+          <a href="#" class="close" data-dismiss="alert">&times;</a>
+          {{ login_error }}
+
+        </div>
+      {% endif %}
+
+
+      {% for field in form if field.widget.input_type != "hidden" %}
+          <div class="form-group{% if field.errors %}has-error{% endif %}">
+            <label for="{{field.id}}" class="col-sm-4 control-label">{{ field.label }}</label>
+            {{  field(class="form-control", placeholder=field.description.placeholder) }}
+            
+            {% if field.errors %}
+            <div class="help-block">
+              <ul>
+                {% for error in field.errors %}
+                  <li>{{ error }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+
+          </div>
+      {% endfor %}    
+  {% endif %}
+
+ <!--  <div class="form-group">
     <label for="inputEmail3" class="col-sm-4 control-label">Email</label>
     <div class="col-sm-4">
       <input type="email" class="form-control" id="inputEmail3" name="email" placeholder="Email">
@@ -48,7 +96,7 @@
     <div class="col-sm-4">
       <input type="text" class="form-control" id="phone" name="birthday" placeholder="1222.10.23">
     </div>
-  </div>
+  </div> -->
 
   <div class="form-group">
     <div class="col-sm-8 control-label">

@@ -4,6 +4,124 @@ from flask import render_template, redirect, url_for,session, request
 from application.models.schema import *
 from application.models import user_manager
 import json
+from flask.ext.wtf import Form
+from wtforms import(
+	StringField,
+	PasswordField,
+	SelectField
+	)
+from wtforms import validators
+class Userform(Form):
+	email=StringField(
+		u'email',
+		[
+			validators.data_required(message=u'please enter your email'),
+			validators.Email(message=u'use email form')
+		],
+		description={'placeholder':u'a@mail.com'}
+	)
+
+	password=PasswordField(
+		u'password',
+		[
+			validators.data_required(message=u'please enter your password'),
+		],
+		description={'placeholder':u'enteryour password'}
+	)
+
+class Editform(Form):
+	password=PasswordField(
+		u'password',
+		[
+			validators.data_required(message=u'please enter your password'),
+			validators.Length(min=8, max=20, message=u'please enter 8~20 password')
+		],
+		description={'placeholder':u'enteryour password'}
+	)
+
+	password_check=PasswordField(
+		u'password_check',
+		[
+			validators.data_required(message=u'please enter your password_check'),
+			validators.EqualTo('password', message=u'not same')		
+		],
+		description={'placeholder':u'enteryour password_check'}
+	)
+	mobile=StringField(
+		u'mobile',
+		[
+			validators.data_required(message=u'please enter your mobile'),
+		],
+		description={'placeholder':u'010-1111-1234'}
+	)
+	gender=SelectField(u'Gender', choices=[('M','male'),('F','female')],coerce=unicode)
+
+	username=StringField(
+		u'username',
+		[
+			validators.data_required(message=u'please enter your name'),
+		],
+		description={'placeholder':u'huhu'}
+	)
+	birthday=StringField(
+		u'birthday',
+		[
+			validators.data_required(message=u'please enter your birthday'),
+		],
+		description={'placeholder':u'1992.01.11'}
+	)
+
+class Signform(Form):
+	email=StringField(
+		u'email',
+		[
+			validators.data_required(message=u'please enter your email'),
+			validators.Email(message=u'use email form')
+		],
+		description={'placeholder':u'a@mail.com'}
+	)
+
+	password=PasswordField(
+		u'password',
+		[
+			validators.data_required(message=u'please enter your password'),
+			validators.Length(min=8, max=20, message=u'please enter 8~20 password')
+		],
+		description={'placeholder':u'enteryour password'}
+	)
+
+	password_check=PasswordField(
+		u'password_check',
+		[
+			validators.data_required(message=u'please enter your password_check'),
+			validators.EqualTo('password', message=u'not same')		
+		],
+		description={'placeholder':u'enteryour password_check'}
+	)
+	mobile=StringField(
+		u'mobile',
+		[
+			validators.data_required(message=u'please enter your mobile'),
+		],
+		description={'placeholder':u'010-1111-1234'}
+	)
+	gender=SelectField(u'Gender', choices=[('M','male'),('F','female')],coerce=unicode)
+
+	username=StringField(
+		u'username',
+		[
+			validators.data_required(message=u'please enter your name'),
+		],
+		description={'placeholder':u'huhu'}
+	)
+	birthday=StringField(
+		u'birthday',
+		[
+			validators.data_required(message=u'please enter your birthday'),
+		],
+		description={'placeholder':u'1992.01.11'}
+	)
+
 
 @app.route('/')
 def index():
@@ -12,27 +130,49 @@ def index():
 @app.route('/login',methods=['GET','POST'])
 def login():
 	if request.method=="POST":
-		email=request.form['email']
-		password=request.form['password']
-		if user_manager.login_check(email,password):
-			session['email']=request.form['email']
-			username=user_manager.get_user_list(email).username
-			session['user_id']=user_manager.get_user_list(email).id
-			session['username']=username
-			session['logged_in'] = True
-			return render_template('layout.html')
+		form=Userform()
+		if form.validate_on_submit():
+			
+			if user_manager.login_check(form.email.data, form.password.data):
+				user=user_manager.get_user_list(form.email.data)
+				session['email']=form.email.data
+				session['username']=user.username
+				session['user_id']=user.id
+				session['logged_in'] = True
+				
+				return render_template('layout.html')
+			else:
+				login_error="wrong email or password"
+				return render_template('login.html',form=form,login_error=login_error)
+		# email=request.form['email']
+		# password=request.form['password']
+		# if user_manager.login_check(email,password):
+		# 	session['email']=request.form['email']
+		# 	username=user_manager.get_user_list(email).username
+		# 	session['user_id']=user_manager.get_user_list(email).id
+		# 	session['username']=username
+		# 	session['logged_in'] = True
+		# 	return render_template('layout.html')
 		else:
-			return render_template('login.html')
+			login_error="wrong email or password"
+			return render_template('login.html',form=form,login_error=login_error)
 	else:
-		return render_template('login.html')
+		form=Userform()
+		return render_template('login.html',form=form)
 
 @app.route('/signup',methods=['GET','POST'])
 def signup():
 	if request.method=="POST":
-		user_manager.add_user(request.form)
-		return render_template('layout.html')
+		form=Signform()
+		if form.validate_on_submit():
+			user_manager.add_user(form.data)
+			return render_template('layout.html',form=form)
+
+		else:
+			return render_template('signup.html',form=form)
 	else:
-		return render_template('signup.html')
+		form=Signform()
+		return render_template('signup.html',form=form)
 
 @app.route('/write',methods=['GET','POST'])
 def write():
@@ -87,6 +227,26 @@ def modify(pid):
 	else:
 		post=user_manager.get_post(pid)
 		return render_template('edit.html',post=post)
+
+# @app.route('/edit_profile/<int:user_id>',methods=['GET','POST'])
+# def edit_profile(user_id):
+# 	if request.method=="POST":
+# 		form=Editform()
+# 		if form.validate_on_submit():
+# 			user_manager.edit_user(session['user_id'],form.data)
+# 			return render_template('layout.html')
+# 		else:
+# 			return render_template('edit_profile.html',form=form,user_id=user_id)
+# 	else:
+# 		user=user_manager.get_user(user_id)
+# 		form=Editform(
+# 			mobile=user.mobile,
+# 			gender=user.gender,
+# 			username=user.username,
+# 			birthday=user.birthday
+# 			)
+
+# 		return render_template('edit_profile.html',profile_image=user.profile_image,user_id=user_id,form=form,user=user)
 
 @app.route('/read/<int:wall_id>/<int:pid>',methods=['GET','POST'])
 def read(pid,wall_id):
